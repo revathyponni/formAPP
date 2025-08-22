@@ -1,0 +1,11 @@
+<div class="form-group">
+  <label class="form-label fw-bold mb-2" [for]="field.id">
+    {{ field.label }}<span class="text-danger" *ngIf="field.required">*</span>
+  </label>
+  <input
+    type="date"
+    class="form-control"
+    [id]="field.id"
+    [placeholder]="field.placeholder ?? 'Select date'"
+  />
+</div>

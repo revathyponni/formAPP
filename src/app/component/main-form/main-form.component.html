@@ -1,0 +1,108 @@
+<div class="card border-primary mb-3">
+  <div
+    class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+  >
+    <h5 class="mb-0">Form Builder</h5>
+    <div class="d-flex align-items-center gap-3">
+      @if(isAdmin()) { @if(activeTab() === 'edit'){
+      <div class="d-flex gap-2">
+        <button
+          class="btn btn-outline-light btn-sm"
+          (click)="formService.addRow()"
+        >
+          <i class="bi bi-plus"></i>Add Row
+        </button>
+      </div>
+      }
+      <button class="btn btn-success btn-sm" (click)="openSaveModal()">
+        <i class="bi bi-save"></i>Save Form
+      </button>
+      <div class="btn-group" role="group" aria-label="Form mode toggle">
+        <button
+          type="button"
+          class="btn btn-outline-light"
+          [class.active]="activeTab() === 'edit'"
+          (click)="activeTab.set('edit')"
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-light"
+          [class.active]="activeTab() === 'preview'"
+          (click)="activeTab.set('preview')"
+        >
+          Preview
+        </button>
+      </div>
+      } @else {
+      <span class="text-white fw-bold">View Mode (Read Only)</span>
+      }
+    </div>
+  </div>
+  <div class="card-body">
+    @if(activeTab() === 'edit'){
+    <app-form-editor></app-form-editor>
+    }@else {
+    <app-form-preview></app-form-preview>
+    }
+  </div>
+</div>
+
+<!-- Save Form Modal -->
+@if (showSaveModal()) {
+<div
+  class="modal fade show d-block"
+  tabindex="-1"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Save Form</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeSaveModal()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        @if (saveSuccess()) {
+        <div class="alert alert-success">
+          <i class="bi bi-check-circle"></i> Form saved successfully!
+        </div>
+        } @else {
+        <div class="mb-3">
+          <label for="formName" class="form-label">Form Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="formName"
+            [(ngModel)]="formName"
+            placeholder="Enter form name"
+            (keyup.enter)="saveForm()"
+          />
+          @if (saveError()) {
+          <div class="text-danger small mt-1">{{ saveError() }}</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="modal-footer">
+        @if (!saveSuccess()) {
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeSaveModal()"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="saveForm()">
+          Save
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}

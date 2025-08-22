@@ -1,0 +1,14 @@
+  <div class="m-2">
+  <h1 class="text-center">Form builder</h1>
+  <div class="row" cdkDropListGroup>
+    <div class="col-2" *ngIf="isAdmin()">
+      <app-form-elements></app-form-elements>
+    </div>
+<div [ngClass]="{ 'col-7': isAdmin(), 'col-10 mx-auto': !isAdmin() }">
+      <app-main-form></app-main-form>
+    </div>
+    <div class="col-3" *ngIf="isAdmin()">
+      <app-field-settings></app-field-settings>
+    </div>
+  </div>
+</div>

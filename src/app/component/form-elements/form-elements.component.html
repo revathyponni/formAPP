@@ -1,0 +1,19 @@
+<div class="card border-success mb-3">
+  <div class="card-header bg-success text-white">
+    <h5 class="mb-0">Form Elements</h5>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title text-center">List of Form Elements</h3>
+    <div
+      cdkDropList
+      id="field-selector"
+      cdkDropListSortingDisabled="true"
+      [cdkDropListData]="'field-selector'"
+      [cdkDropListEnterPredicate]="blockDropOnElement"
+    >
+      @for (item of fieldTypes; track item.type) {
+      <app-field-button [fields]="[item]!"></app-field-button>
+      }
+    </div>
+  </div>
+</div>

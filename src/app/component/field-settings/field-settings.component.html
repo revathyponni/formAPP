@@ -1,0 +1,152 @@
+<div class="card border-info mb-3">
+  <div class="card-header bg-info text-white">
+    <h5 class="mb-0">Form Control</h5>
+  </div>
+  <div class="card-body">
+    @if(formService.selectedFieldId(); as selectedField) {
+    <h3 class="mb-4">Field Properties</h3>
+    <div class="settings-container">
+      @for (setting of fieldSettings(); track setting.key) {
+      <div class="setting-item mb-4 p-3 border rounded bg-light">
+        @switch (setting.type) { @case ('text') {
+        <div class="form-group">
+          <label class="form-label fw-bold mb-2">{{ setting.label }}</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="fieldValues()[setting.key]"
+            (ngModelChange)="
+              updateFieldValue(selectedField.id, setting.key, $event)
+            "
+            placeholder="{{ setting.label }}"
+            [disabled]="!isAdmin()"
+          />
+        </div>
+        } @case ('checkbox') {
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [(ngModel)]="fieldValues()[setting.key]"
+            (ngModelChange)="
+              updateFieldValue(selectedField.id, setting.key, $event)
+            "
+            id="{{ setting.key }}"
+            [disabled]="!isAdmin()"
+          />
+          <label class="form-check-label fw-bold" for="{{ setting.key }}">
+            {{ setting.label }}
+          </label>
+        </div>
+        } @case ('dynamic-options') {
+        <div class="dynamic-options-group">
+          <h6 class="fw-bold mb-3">{{ setting.label }}</h6>
+          <div class="options-container border rounded p-3 bg-white">
+            @for (option of fieldValues()[setting.key]; track option.value; let
+            i = $index) {
+            <div class="option-item row g-2 align-items-center mb-3">
+              <div class="col-md-5 col-12">
+                <div class="form-group">
+                  <label class="form-label small text-muted mb-1">Label</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    [value]="option.label"
+                    #labelInput
+                    (input)="
+                      updateOptionLabel(
+                        selectedField.id,
+                        setting.key,
+                        i,
+                        labelInput.value
+                      )
+                    "
+                    placeholder="Option label"
+                    [disabled]="!isAdmin()"
+                  />
+                </div>
+              </div>
+              <div class="col-md-5 col-12">
+                <div class="form-group">
+                  <label class="form-label small text-muted mb-1">Value</label>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    [value]="option.value"
+                    #valueInput
+                    (input)="
+                      updateOptionValue(
+                        selectedField.id,
+                        setting.key,
+                        i,
+                        valueInput.value
+                      )
+                    "
+                    placeholder="Option value"
+                    [disabled]="!isAdmin()"
+                  />
+                </div>
+              </div>
+              <div class="col-md-2 col-12 mt-4 pt-1">
+                @if(isAdmin()) {
+                <button
+                  class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center"
+                  (click)="removeOption(selectedField.id, setting.key, i)"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+                }
+              </div>
+            </div>
+            } @if(isAdmin()) {
+            <button
+              class="btn btn-primary btn-sm mt-2"
+              (click)="addOption(selectedField.id, setting.key)"
+            >
+              <i class="bi bi-plus"></i> Add Option
+            </button>
+            }
+          </div>
+        </div>
+        } @case ('date') {
+        <div class="form-group">
+          <label class="form-label fw-bold mb-2">{{ setting.label }}</label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="fieldValues()[setting.key]"
+            (ngModelChange)="
+              updateFieldValue(selectedField.id, setting.key, $event)
+            "
+            placeholder="{{ setting.label }}"
+            [disabled]="!isAdmin()"
+          />
+        </div>
+        } @case ('select') {
+        <div class="form-group">
+          <label class="form-label fw-bold mb-2">{{ setting.label }}</label>
+          <select
+            class="form-select"
+            [(ngModel)]="fieldValues()[setting.key]"
+            (ngModelChange)="
+              updateFieldValue(selectedField.id, setting.key, $event)
+            "
+            [disabled]="!isAdmin()"
+          >
+            @for (option of setting.options; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+        } }
+      </div>
+      }
+    </div>
+    }@else {
+    <div class="alert alert-warning">
+      <i class="bi bi-exclamation-triangle"></i> Please select a field to edit
+      its settings.
+    </div>
+    }
+  </div>
+</div>

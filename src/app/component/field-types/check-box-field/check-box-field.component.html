@@ -1,0 +1,18 @@
+
+<div class="checkbox-group">
+  <label class="form-label fw-bold mb-2">{{ field().label }}</label>
+  @for (option of getOptions(); track option.value) {
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      [id]="'checkbox-' + option.value"
+      [value]="option.value"
+    />
+    <label class="form-check-label" [for]="'checkbox-' + option.value">
+      {{ option.label }}
+    </label>
+  </div>
+  }
+</div>
+

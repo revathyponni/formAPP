@@ -1,0 +1,30 @@
+<div class="w-100 d-flex" [class.justify-content-start]="field().alignment === 'left'"
+     [class.justify-content-center]="field().alignment === 'center'"
+     [class.justify-content-end]="field().alignment === 'right'">
+
+  <div class="btn-group gap-2" *ngIf="field().showCancel; else singleButton">
+    <button
+      [type]="isSubmitButton() ? 'submit' : 'button'"
+      class="btn {{ field().buttonType || 'btn-primary' }}"
+      [disabled]="field().disabled"
+      (click)="handleClick()">
+      {{ field().label || 'Button' }}
+    </button>
+    <button
+      type="button"
+      class="btn {{ field().cancelButtonType || 'btn-secondary' }}"
+      [disabled]="field().disabled">
+      {{ field().cancelLabel || 'Cancel' }}
+    </button>
+  </div>
+
+  <ng-template #singleButton>
+    <button
+      [type]="isSubmitButton() ? 'submit' : 'button'"
+      class="btn {{ field().buttonType || 'btn-primary' }}"
+      [disabled]="field().disabled"
+      (click)="handleClick()">
+      {{ field().label || 'Button' }}
+    </button>
+  </ng-template>
+</div>
