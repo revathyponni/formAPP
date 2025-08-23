@@ -1,5 +1,8 @@
 <div class="form-group">
-  <label class="form-label fw-bold mb-2">{{ field.label }}<span class="text-danger" *ngIf="field.required">*</span></label>
+  <label class="form-label fw-bold mb-2"
+    >{{ field.label
+    }}<span class="text-danger" *ngIf="field.required">*</span></label
+  >
 
   @for (option of field.options; track option.value) {
   <div class="form-check">
@@ -14,9 +17,7 @@
       {{ option.label }}
     </label>
   </div>
-  }
-
-  @if (!field.options || field.options.length === 0) {
+  } @if (!field.options || field.options.length === 0) {
   <div class="text-muted small">No options configured</div>
   }
 </div>

@@ -1,14 +1,17 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormService } from '../../services/form.service';
 import { AuthService } from '../../services/auth.service';
-import { FormStorageService, FormSubmission, StoredForm } from '../../services/form-storage.service';
+import {
+  FormStorageService,
+} from '../../services/form-storage.service';
 import { Router } from '@angular/router';
+import { FormSubmission, StoredForm } from '../../models/form';
 
 @Component({
   selector: 'app-submissions',
   standalone: false,
   templateUrl: './submissions.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class SubmissionsComponent implements OnInit {
   private formService = inject(FormService);
@@ -16,40 +19,44 @@ export class SubmissionsComponent implements OnInit {
   private formStorage = inject(FormStorageService);
   private router = inject(Router);
 
-  // Signals
   submissions = signal<FormSubmission[]>([]);
   forms = signal<StoredForm[]>([]);
   isLoading = signal(true);
   selectedFormId = signal<string>('all');
   searchTerm = signal('');
-  dateFilter = signal<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+  dateFilter = signal<{ start: Date | null; end: Date | null }>({
+    start: null,
+    end: null,
+  });
 
-  // Computed properties
   isAdmin = computed(() => this.authService.isAdmin());
   filteredSubmissions = computed(() => {
     let filtered = this.submissions();
 
-    // Filter by selected form
     if (this.selectedFormId() !== 'all') {
-      filtered = filtered.filter(sub => sub.formId === this.selectedFormId());
+      filtered = filtered.filter((sub) => sub.formId === this.selectedFormId());
     }
 
-    // Filter by search term
     if (this.searchTerm()) {
       const term = this.searchTerm().toLowerCase();
-      filtered = filtered.filter(sub => {
-        const form = this.forms().find(f => f.id === sub.formId);
-        return form?.name.toLowerCase().includes(term) ||
-               JSON.stringify(sub.data).toLowerCase().includes(term);
+      filtered = filtered.filter((sub) => {
+        const form = this.forms().find((f) => f.id === sub.formId);
+        return (
+          form?.name.toLowerCase().includes(term) ||
+          JSON.stringify(sub.data).toLowerCase().includes(term)
+        );
       });
     }
 
-    // Filter by date range
     if (this.dateFilter().start || this.dateFilter().end) {
-      filtered = filtered.filter(sub => {
+      filtered = filtered.filter((sub) => {
         const submittedAt = new Date(sub.submittedAt);
-        const start = this.dateFilter().start ? new Date(this.dateFilter().start!) : null;
-        const end = this.dateFilter().end ? new Date(this.dateFilter().end!) : null;
+        const start = this.dateFilter().start
+          ? new Date(this.dateFilter().start!)
+          : null;
+        const end = this.dateFilter().end
+          ? new Date(this.dateFilter().end!)
+          : null;
 
         if (start && submittedAt < start) return false;
         if (end && submittedAt > end) return false;
@@ -57,8 +64,9 @@ export class SubmissionsComponent implements OnInit {
       });
     }
 
-    return filtered.sort((a, b) =>
-      new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
+    return filtered.sort(
+      (a, b) =>
+        new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
     );
   });
 
@@ -69,11 +77,9 @@ export class SubmissionsComponent implements OnInit {
   private loadData() {
     this.isLoading.set(true);
 
-    // Load all submissions
     const allSubmissions = this.formStorage.getAllSubmissions();
     this.submissions.set(allSubmissions);
 
-    // Load all forms for reference
     const allForms = this.formService.getAllStoredForms();
     this.forms.set(allForms);
 
@@ -91,7 +97,7 @@ export class SubmissionsComponent implements OnInit {
   onDateFilterChange(start: string | null, end: string | null) {
     this.dateFilter.set({
       start: start ? new Date(start) : null,
-      end: end ? new Date(end) : null
+      end: end ? new Date(end) : null,
     });
   }
 
@@ -102,7 +108,7 @@ export class SubmissionsComponent implements OnInit {
   }
 
   getFormName(formId: string): string {
-    const form = this.forms().find(f => f.id === formId);
+    const form = this.forms().find((f) => f.id === formId);
     return form?.name || 'Unknown Form';
   }
 
@@ -119,40 +125,38 @@ export class SubmissionsComponent implements OnInit {
     return dateObj.toLocaleString();
   }
 
-  onStartDateChange(dateString: string) {
+  onStartDateChange(dateString: string): void {
     const start = dateString ? new Date(dateString) : null;
     this.dateFilter.set({
       ...this.dateFilter(),
-      start: start
+      start: start,
     });
   }
 
-  onEndDateChange(dateString: string) {
+  onEndDateChange(dateString: string): void {
     const end = dateString ? new Date(dateString) : null;
     this.dateFilter.set({
       ...this.dateFilter(),
-      end: end
+      end: end,
     });
   }
 
-  viewSubmissionDetails(submission: FormSubmission) {
-    // Navigate to a detailed view or show modal
+  viewSubmissionDetails(submission: FormSubmission): void {
     console.log('View submission:', submission);
-    // You could implement a modal or separate detail view here
   }
 
-  deleteSubmission(submissionId: string) {
+  deleteSubmission(submissionId: string): void {
     if (confirm('Are you sure you want to delete this submission?')) {
       this.formStorage.deleteSubmission(submissionId);
-      this.loadData(); // Reload data
+      this.loadData();
     }
   }
 
-  exportSubmissions() {
-    const data = this.filteredSubmissions().map(sub => ({
+  exportSubmissions(): void {
+    const data = this.filteredSubmissions().map((sub) => ({
       ...sub,
       formName: this.getFormName(sub.formId),
-      submittedAt: new Date(sub.submittedAt).toLocaleString()
+      submittedAt: new Date(sub.submittedAt).toLocaleString(),
     }));
 
     const csv = this.convertToCSV(data);
@@ -163,19 +167,21 @@ export class SubmissionsComponent implements OnInit {
     const headers = Object.keys(data[0] || {});
     const csvRows = [
       headers.join(','),
-      ...data.map(row =>
-        headers.map(header => {
-          const value = row[header];
-          return typeof value === 'string' && value.includes(',')
-            ? `"${value.replace(/"/g, '""')}"`
-            : value;
-        }).join(',')
-      )
+      ...data.map((row) =>
+        headers
+          .map((header) => {
+            const value = row[header];
+            return typeof value === 'string' && value.includes(',')
+              ? `"${value.replace(/"/g, '""')}"`
+              : value;
+          })
+          .join(',')
+      ),
     ];
     return csvRows.join('\n');
   }
 
-  private downloadCSV(csv: string, filename: string) {
+  private downloadCSV(csv: string, filename: string): void {
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -185,7 +191,7 @@ export class SubmissionsComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
-  goToFormBuilder() {
+  goToFormBuilder(): void {
     this.router.navigate(['/dashboard']);
   }
 }

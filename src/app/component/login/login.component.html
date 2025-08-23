@@ -1,11 +1,12 @@
-<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
-  <div class="card shadow-lg" style="width: 400px;">
+<div
+  class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light"
+>
+  <div class="card shadow-lg" style="width: 400px">
     <div class="card-header bg-primary text-white text-center py-3">
       <h3 class="mb-0">Login</h3>
     </div>
     <div class="card-body p-4">
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-
         <!-- Username Field -->
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
@@ -17,7 +18,7 @@
             name="username"
             placeholder="Enter your username"
             required
-          >
+          />
         </div>
 
         <!-- Password Field -->
@@ -31,7 +32,7 @@
             name="password"
             placeholder="Enter your password"
             required
-          >
+          />
         </div>
 
         <!-- Role Selection -->
@@ -47,10 +48,8 @@
                 value="user"
                 [checked]="role === 'user'"
                 (change)="onRoleChange('user')"
-              >
-              <label class="form-check-label" for="roleUser">
-                User
-              </label>
+              />
+              <label class="form-check-label" for="roleUser"> User </label>
             </div>
             <div class="form-check">
               <input
@@ -61,19 +60,17 @@
                 value="admin"
                 [checked]="role === 'admin'"
                 (change)="onRoleChange('admin')"
-              >
-              <label class="form-check-label" for="roleAdmin">
-                Admin
-              </label>
+              />
+              <label class="form-check-label" for="roleAdmin"> Admin </label>
             </div>
           </div>
         </div>
 
         <!-- Error Message -->
         @if (errorMessage) {
-          <div class="alert alert-danger mb-3" role="alert">
-            {{ errorMessage }}
-          </div>
+        <div class="alert alert-danger mb-3" role="alert">
+          {{ errorMessage }}
+        </div>
         }
 
         <!-- Submit Button -->
@@ -84,7 +81,6 @@
         >
           Login
         </button>
-
       </form>
     </div>
   </div>

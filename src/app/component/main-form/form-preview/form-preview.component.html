@@ -1,31 +1,32 @@
 <div class="container mt-3">
-  @if (hasFields()) {
-    @for (row of formService.rows(); track row.id) {
-      <div class="mb-3 row">
-        @for (field of row.fields; track field.id) {
-          <div class="col" [ngClass]="{
-                'col-12': row.fields.length === 1,
-                'col-6': row.fields.length === 2,
-                'col-4': row.fields.length === 3
-              }">
-            <app-field-preview [field]="field"></app-field-preview>
-          </div>
-        }
-      </div>
-    }
-  } @else {
-    <div class="alert alert-info text-center">
-      <h4>No Fields Added Yet</h4>
-      <p>
-        @if (authService.isAdmin()) {
-          Please add some fields to your form using the form builder.
-        } @else {
-          Please log in with admin credentials to add fields to this form.
-        }
-      </p>
-      @if (!authService.isAdmin()) {
-        <small class="text-muted">Admin credentials: username "admin", password "admin"</small>
-      }
+  @if (hasFields()) { @for (row of formService.rows(); track row.id) {
+  <div class="mb-3 row">
+    @for (field of row.fields; track field.id) {
+    <div
+      class="col"
+      [ngClass]="{
+        'col-12': row.fields.length === 1,
+        'col-6': row.fields.length === 2,
+        'col-4': row.fields.length === 3
+      }"
+    >
+      <app-field-preview [field]="field"></app-field-preview>
     </div>
+    }
+  </div>
+  } } @else {
+  <div class="alert alert-info text-center">
+    <h4>No Fields Added Yet</h4>
+    <p>
+      @if (authService.isAdmin()) { Please add some fields to your form using
+      the form builder. } @else { Please log in with admin credentials to add
+      fields to this form. }
+    </p>
+    @if (!authService.isAdmin()) {
+    <small class="text-muted"
+      >Admin credentials: username "admin", password "admin"</small
+    >
+    }
+  </div>
   }
 </div>

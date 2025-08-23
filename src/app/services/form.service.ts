@@ -8,7 +8,8 @@ import {
   BUTTON_FIELD_DEFINITION,
 } from '../models/constants';
 import { FieldTypeDefinition, FormField, FormRow } from '../models/field';
-import { FormStorageService, StoredForm, FormSubmission } from './form-storage.service';
+import { FormStorageService } from './form-storage.service';
+import { StoredForm, FormSubmission } from '../models/form';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +44,6 @@ export class FormService {
     this._rows.set([{ id: crypto.randomUUID(), fields: [] }]);
   }
 
-  // Unsaved changes tracking methods
   markAsUnsaved(): void {
     this._hasUnsavedChanges.set(true);
   }
@@ -57,7 +57,7 @@ export class FormService {
     this.markAsSaved();
   }
 
-  printValues(a:any){
+  printValues(a: any) {
     console.log(a);
   }
   getAllFields(): FieldTypeDefinition[] {
@@ -171,7 +171,7 @@ export class FormService {
   saveCurrentForm(name?: string): StoredForm {
     const formData = {
       name: name || 'Untitled Form',
-      rows: this._rows()
+      rows: this._rows(),
     };
     const savedForm = this.formStorage.saveForm(formData);
     this.markAsSaved();

@@ -1,3 +1,6 @@
+/**
+ * Field type definition for form builder.
+ */
 export interface FieldTypeDefinition {
   type: string;
   label: string;
@@ -7,6 +10,9 @@ export interface FieldTypeDefinition {
   settingsConfig?: FieldSettingDefinition[];
 }
 
+/**
+ * Default configuration for form fields.
+ */
 export interface DefaultConfig {
   label: string;
   required: boolean;
@@ -18,6 +24,10 @@ export interface DefaultConfig {
   cancelLabel?: string;
   cancelButtonType?: string;
 }
+
+/**
+ * Form field interface for form builder.
+ */
 export interface FormField {
   id: string;
   type: string;
@@ -34,11 +44,17 @@ export interface FormField {
   cancelButtonType?: string;
 }
 
+/**
+ * Form row interface for form builder.
+ */
 export interface FormRow {
   id: string;
   fields: FormField[];
 }
 
+/**
+ * Field setting definition for form builder.
+ */
 export interface FieldSettingDefinition {
   key: string;
   label: string;
@@ -53,7 +69,18 @@ export interface FieldSettingDefinition {
   options?: OptionItem[];
 }
 
+/**
+ * Option item interface for form builder.
+ */
 export interface OptionItem {
   label: string;
   value: string;
+}
+
+/**
+ * User interface for authentication.
+ */
+export interface User {
+  username: string;
+  role: 'admin' | 'user';
 }

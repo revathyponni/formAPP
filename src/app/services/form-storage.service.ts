@@ -1,29 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { FormRow } from '../models/field';
+import { FormSubmission, StoredForm } from '../models/form';
 import { MockApiService } from './mock-api.service';
-
-export interface StoredForm {
-  id: string;
-  name: string;
-  rows: FormRow[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface FormSubmission {
-  id: string;
-  formId: string;
-  data: Record<string, any>;
-  submittedAt: Date;
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormStorageService {
   private mockApi = inject(MockApiService);
-
-  // Form management methods - using localStorage directly for synchronous operations
   saveForm(form: Omit<StoredForm, 'id' | 'createdAt' | 'updatedAt'> & { id?: string }): StoredForm {
     const forms = this.getAllForms();
     const now = new Date();
@@ -31,14 +14,12 @@ export class FormStorageService {
     let formToSave: StoredForm;
 
     if (form.id && forms.some(f => f.id === form.id)) {
-      // Update existing form
       formToSave = {
         ...forms.find(f => f.id === form.id)!,
         ...form,
         updatedAt: now
       };
     } else {
-      // Create new form
       formToSave = {
         id: crypto.randomUUID(),
         name: form.name || 'Untitled Form',
@@ -72,13 +53,10 @@ export class FormStorageService {
   deleteForm(id: string): void {
     const forms = this.getAllForms().filter(form => form.id !== id);
     localStorage.setItem('formApp_forms_mock', JSON.stringify(forms));
-
-    // Also delete submissions for this form
     const submissions = this.getFormSubmissions(id);
     submissions.forEach(sub => this.deleteSubmission(sub.id));
   }
 
-  // Submission management methods
   saveSubmission(formId: string, data: Record<string, any>): FormSubmission {
     const submission: FormSubmission = {
       id: crypto.randomUUID(),

@@ -1,178 +1,175 @@
 <div class="container mt-4">
-  <!-- Loading State -->
   @if (isLoading()) {
-    <div class="text-center">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p class="mt-2">Loading form...</p>
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
-  }
-
-  <!-- Error State -->
-  @if (errorMessage() && !isLoading()) {
-    <div class="alert alert-danger" role="alert">
-      <h4 class="alert-heading">Error</h4>
-      <p>{{ errorMessage() }}</p>
-      <button class="btn btn-primary" (click)="goBack()">Go Back</button>
-    </div>
-  }
-
-  <!-- Form Content -->
-  @if (form() && !isLoading() && !errorMessage()) {
-    <div class="card">
-      <div class="card-header bg-primary text-white">
-        <div class="d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">{{ form()?.name }}</h4>
-          <button class="btn btn-light btn-sm" (click)="goBack()">
-            <i class="bi bi-arrow-left"></i> Back
-          </button>
-        </div>
+    <p class="mt-2">Loading form...</p>
+  </div>
+  } @if (errorMessage() && !isLoading()) {
+  <div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Error</h4>
+    <p>{{ errorMessage() }}</p>
+    <button class="btn btn-primary" (click)="goBack()">Go Back</button>
+  </div>
+  } @if (form() && !isLoading() && !errorMessage()) {
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">{{ form()?.name }}</h4>
+        <button class="btn btn-light btn-sm" (click)="goBack()">
+          <i class="bi bi-arrow-left"></i> Back
+        </button>
       </div>
+    </div>
 
-      <div class="card-body">
-        <!-- Success Message -->
-        @if (submissionSuccess()) {
-          <div class="alert alert-success" role="alert">
-            <h4 class="alert-heading">Success!</h4>
-            <p>Your form has been submitted successfully.</p>
-            <p class="mb-0">Redirecting to dashboard...</p>
-          </div>
-        }
+    <div class="card-body">
+      @if (submissionSuccess()) {
+      <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Success!</h4>
+        <p>Your form has been submitted successfully.</p>
+        <p class="mb-0">Redirecting to dashboard...</p>
+      </div>
+      }
 
-        <!-- Form Fields -->
-        @if (!submissionSuccess()) {
-          <form (ngSubmit)="onSubmit()">
-            @for (row of form()?.rows; track row.id) {
-              <div class="row mb-3">
-                @for (field of row.fields; track field.id) {
-                  <div class="col" [ngClass]="{
-                    'col-12': row.fields.length === 1,
-                    'col-6': row.fields.length === 2,
-                    'col-4': row.fields.length === 3
-                  }">
-                    <!-- Regular Form Fields -->
-                    @if (field.type !== 'button') {
-                      <div class="mb-3">
-                        <label [for]="field.id" class="form-label">
-                          {{ field.label }}
-                          @if (field.required) {
-                            <span class="text-danger">*</span>
-                          }
-                        </label>
+      <!-- Form Fields -->
+      @if (!submissionSuccess()) {
+      <form (ngSubmit)="onSubmit()">
+        @for (row of form()?.rows; track row.id) {
+        <div class="row mb-3">
+          @for (field of row.fields; track field.id) {
+          <div
+            class="col"
+            [ngClass]="{
+              'col-12': row.fields.length === 1,
+              'col-6': row.fields.length === 2,
+              'col-4': row.fields.length === 3
+            }"
+          >
+            @if (field.type !== 'button') {
+            <div class="mb-3">
+              <label [for]="field.id" class="form-label">
+                {{ field.label }}
+                @if (field.required) {
+                <span class="text-danger">*</span>
+                }
+              </label>
 
-                        <!-- Text Input -->
-                        @if (field.type === 'text') {
-                          <input
-                            [id]="field.id"
-                            [type]="field.inputType || 'text'"
-                            class="form-control"
-                            [placeholder]="field.placeholder || ''"
-                            [required]="field.required"
-                            [value]="getFieldValue(field.id)"
-                            (input)="onFieldChange(field.id, $any($event.target).value)"
-                          />
-                        }
+              <!-- Text Input -->
+              @if (field.type === 'text') {
+              <input
+                [id]="field.id"
+                [type]="field.inputType || 'text'"
+                class="form-control"
+                [placeholder]="field.placeholder || ''"
+                [required]="field.required"
+                [value]="getFieldValue(field.id)"
+                (input)="onFieldChange(field.id, $any($event.target).value)"
+              />
+              }
 
-                        <!-- Select Input -->
-                        @if (field.type === 'select') {
-                          <select
-                            [id]="field.id"
-                            class="form-select"
-                            [required]="field.required"
-                            [value]="getFieldValue(field.id)"
-                            (change)="onFieldChange(field.id, $any($event.target).value)"
-                          >
-                            <option value="">Select an option</option>
-                            @for (option of field.options; track option.value) {
-                              <option [value]="option.value">{{ option.label }}</option>
-                            }
-                          </select>
-                        }
+              <!-- Select Input -->
+              @if (field.type === 'select') {
+              <select
+                [id]="field.id"
+                class="form-select"
+                [required]="field.required"
+                [value]="getFieldValue(field.id)"
+                (change)="onFieldChange(field.id, $any($event.target).value)"
+              >
+                <option value="">Select an option</option>
+                @for (option of field.options; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
+                }
+              </select>
+              }
 
-                        <!-- Checkbox Input -->
-                        @if (field.type === 'checkbox') {
-                          <div class="form-check">
-                            <input
-                              [id]="field.id"
-                              type="checkbox"
-                              class="form-check-input"
-                              [checked]="getFieldValue(field.id)"
-                              (change)="onFieldChange(field.id, $any($event.target).checked)"
-                            />
-                            <label [for]="field.id" class="form-check-label">
-                              {{ field.placeholder || 'Check this box' }}
-                            </label>
-                          </div>
-                        }
+              <!-- Checkbox Input -->
+              @if (field.type === 'checkbox') {
+              <div class="form-check">
+                <input
+                  [id]="field.id"
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="getFieldValue(field.id)"
+                  (change)="
+                    onFieldChange(field.id, $any($event.target).checked)
+                  "
+                />
+                <label [for]="field.id" class="form-check-label">
+                  {{ field.placeholder || "Check this box" }}
+                </label>
+              </div>
+              }
 
-                        <!-- Radio Input -->
-                        @if (field.type === 'radio') {
-                          <div>
-                            @for (option of field.options; track option.value) {
-                              <div class="form-check">
-                                <input
-                                  [id]="field.id + '-' + option.value"
-                                  type="radio"
-                                  class="form-check-input"
-                                  [name]="field.id"
-                                  [value]="option.value"
-                                  [checked]="getFieldValue(field.id) === option.value"
-                                  (change)="onFieldChange(field.id, option.value)"
-                                />
-                                <label [for]="field.id + '-' + option.value" class="form-check-label">
-                                  {{ option.label }}
-                                </label>
-                              </div>
-                            }
-                          </div>
-                        }
-
-                        <!-- Date Input -->
-                        @if (field.type === 'date') {
-                          <input
-                            [id]="field.id"
-                            type="date"
-                            class="form-control"
-                            [required]="field.required"
-                            [value]="getFieldValue(field.id)"
-                            (input)="onFieldChange(field.id, $any($event.target).value)"
-                          />
-                        }
-                      </div>
-                    }
-
-                    <!-- Submit Button -->
-                    @if (field.type === 'button' && field.buttonType === 'submit') {
-                      <div class="mb-3">
-                        <app-button-field
-                          [field]="field"
-                          (onSubmit)="onSubmit()">
-                        </app-button-field>
-                      </div>
-                    }
-                  </div>
+              <!-- Radio Input -->
+              @if (field.type === 'radio') {
+              <div>
+                @for (option of field.options; track option.value) {
+                <div class="form-check">
+                  <input
+                    [id]="field.id + '-' + option.value"
+                    type="radio"
+                    class="form-check-input"
+                    [name]="field.id"
+                    [value]="option.value"
+                    [checked]="getFieldValue(field.id) === option.value"
+                    (change)="onFieldChange(field.id, option.value)"
+                  />
+                  <label
+                    [for]="field.id + '-' + option.value"
+                    class="form-check-label"
+                  >
+                    {{ option.label }}
+                  </label>
+                </div>
                 }
               </div>
+              }
+
+              <!-- Date Input -->
+              @if (field.type === 'date') {
+              <input
+                [id]="field.id"
+                type="date"
+                class="form-control"
+                [required]="field.required"
+                [value]="getFieldValue(field.id)"
+                (input)="onFieldChange(field.id, $any($event.target).value)"
+              />
+              }
+            </div>
             }
 
-            <!-- Fallback Submit Button -->
-            @if (!hasSubmitButton(form()?.rows || [])) {
-              <div class="text-end">
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  [disabled]="isSubmitting()">
-                  @if (isSubmitting()) {
-                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                  }
-                  Submit Form
-                </button>
-              </div>
+            <!-- Submit Button -->
+            @if (field.type === 'button' && field.buttonType === 'submit') {
+            <div class="mb-3">
+              <app-button-field [field]="field" (onSubmit)="onSubmit()">
+              </app-button-field>
+            </div>
             }
-          </form>
+          </div>
+          }
+        </div>
+        } @if (!hasSubmitButton(form()?.rows || [])) {
+        <div class="text-end">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSubmitting()"
+          >
+            @if (isSubmitting()) {
+            <span
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+            ></span>
+            } Submit Form
+          </button>
+        </div>
         }
-      </div>
+      </form>
+      }
     </div>
+  </div>
   }
 </div>

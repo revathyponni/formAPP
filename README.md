@@ -1,59 +1,50 @@
-# FormApp1
+1. Role --> Admin
+   userName: admin,
+   password: admin
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
+2. Role --> User
+   userName: user,
+   password: user
 
-## Development server
+3. Project Setup Instructions
+   Follow these steps to initialize and configure the Angular project with Bootstrap, Bootstrap Icons, and Angular Material:
 
-To start a local development server, run:
+## Need to run this command on VS code terimial
 
-```bash
-ng serve
-```
+    npm install; npm install bootstrap; npm install bootstrap-icons; ng add @angular/material; npm install @angular/animations ; ng serve
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+    It will install at single stretch
 
-## Code scaffolding
+1. Install project dependencies
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+   ## npm install -Installs all packages listed in package.json.
 
-```bash
-ng generate component component-name
-```
+2. Add Bootstrap for responsive layout and styling
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+   ## npm install bootstrap
 
-```bash
-ng generate --help
-```
+Includes Bootstrap CSS framework for grid, spacing, and components.
 
-## Building
+3. Add Bootstrap Icons
 
-To build the project run:
+   ## npm install bootstrap-icons
 
-```bash
-ng build
-```
+   Provides scalable vector icons compatible with Bootstrap.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+4. Integrate Angular Material
 
-## Running unit tests
+   ## ng add @angular/material
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+   Adds Angular Material components, themes, and animation support.
 
-```bash
-ng test
-```
+5. Install Angular Animations (required by Material)
 
-## Running end-to-end tests
+   ## npm install @angular/animations
 
-For end-to-end (e2e) testing, run:
+   Ensures smooth transitions and animations in Angular Material components.
 
-```bash
-ng e2e
-```
+6. Start the development server
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+   ## ng serve
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+   Launches the app locally at http://localhost:4200.

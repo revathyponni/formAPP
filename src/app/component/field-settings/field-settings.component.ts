@@ -3,6 +3,9 @@ import { FormService } from '../../services/form.service';
 import { OptionItem } from '../../models/field';
 import { AuthService } from '../../services/auth.service';
 
+/**
+ * This component is used to manage field settings.
+ */
 @Component({
   selector: 'app-field-settings',
   standalone: false,
@@ -10,11 +13,6 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './field-settings.component.scss',
 })
 export class FieldSettingsComponent {
-  //Injections
-  formService = inject(FormService);
-  authService = inject(AuthService);
-
-  // Computed property to check if user is admin
   isAdmin = computed(() => this.authService.isAdmin());
 
   fieldSettings = computed(() => {
@@ -33,31 +31,81 @@ export class FieldSettingsComponent {
     return selectedField as any;
   });
 
-  updateFieldValue(fieldId: string, settingKey: string, value: any) {
+  //Injections
+  formService = inject(FormService);
+  authService = inject(AuthService);
+
+  /**
+   * Updates the value of a specific field.
+   * @param fieldId - The ID of the field to update.
+   * @param settingKey - The key of the setting to update.
+   * @param value - The new value for the setting.
+   */
+  updateFieldValue(fieldId: string, settingKey: string, value: any): void {
     this.formService.updateField(fieldId, { [settingKey]: value });
   }
 
-  addOption(fieldId: string, settingKey: string) {
+  /**
+   * Adds a new option to a dynamic field.
+   * @param fieldId - The ID of the field to update.
+   * @param settingKey - The key of the setting to update.
+   */
+  addOption(fieldId: string, settingKey: string): void {
     const currentOptions = this.fieldValues()[settingKey] || [];
-    const newOption = { label: 'New Option', value: `option${currentOptions.length + 1}` };
+    const newOption = {
+      label: 'New Option',
+      value: `option${currentOptions.length + 1}`,
+    };
     const updatedOptions = [...currentOptions, newOption];
     this.formService.updateField(fieldId, { [settingKey]: updatedOptions });
   }
 
-  removeOption(fieldId: string, settingKey: string, index: number) {
+  /**
+   * Removes an option from a dynamic field.
+   * @param fieldId - The ID of the field to update.
+   * @param settingKey - The key of the setting to update.
+   * @param index - The index of the option to remove.
+   */
+  removeOption(fieldId: string, settingKey: string, index: number): void {
     const currentOptions: OptionItem[] = this.fieldValues()[settingKey] || [];
-    const updatedOptions = currentOptions.filter((_: OptionItem, i: number) => i !== index);
+    const updatedOptions = currentOptions.filter(
+      (_: OptionItem, i: number) => i !== index
+    );
     this.formService.updateField(fieldId, { [settingKey]: updatedOptions });
   }
 
-  updateOptionLabel(fieldId: string, settingKey: string, index: number, label: string) {
+  /**
+   * Updates the label of an option in a dynamic field.
+   * @param fieldId - The ID of the field to update.
+   * @param settingKey - The key of the setting to update.
+   * @param index - The index of the option to update.
+   * @param label - The new label for the option.
+   */
+  updateOptionLabel(
+    fieldId: string,
+    settingKey: string,
+    index: number,
+    label: string
+  ): void {
     const currentOptions = this.fieldValues()[settingKey] || [];
     const updatedOptions = [...currentOptions];
     updatedOptions[index] = { ...updatedOptions[index], label };
     this.formService.updateField(fieldId, { [settingKey]: updatedOptions });
   }
 
-  updateOptionValue(fieldId: string, settingKey: string, index: number, value: string) {
+  /**
+   * Updates the value of an option in a dynamic field.
+   * @param fieldId - The ID of the field to update.
+   * @param settingKey - The key of the setting to update.
+   * @param index - The index of the option to update.
+   * @param value - The new value for the option.
+   */
+  updateOptionValue(
+    fieldId: string,
+    settingKey: string,
+    index: number,
+    value: string
+  ): void {
     const currentOptions = this.fieldValues()[settingKey] || [];
     const updatedOptions = [...currentOptions];
     updatedOptions[index] = { ...updatedOptions[index], value };

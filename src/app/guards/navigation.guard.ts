@@ -6,6 +6,9 @@ export interface CanComponentDeactivate {
   canDeactivate: () => Observable<boolean> | Promise<boolean> | boolean;
 }
 
+/**
+ * Navigation guard to protect unsaved changes in a component.
+ */
 @Injectable({
   providedIn: 'root'
 })

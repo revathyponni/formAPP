@@ -3,11 +3,11 @@
   <mat-select [required]="field().required">
     @if(field().options){
     <mat-option *ngFor="let option of field().options" [value]="option.value">
-      {{ option.label }}
-    </mat-option>}@else {
-      <mat-option value="option1">Option 1</mat-option>
-      <mat-option value="option2">Option 2</mat-option>
-      <mat-option value="option3">Option 3</mat-option>
+      {{ option.label }} </mat-option
+    >}@else {
+    <mat-option value="option1">Option 1</mat-option>
+    <mat-option value="option2">Option 2</mat-option>
+    <mat-option value="option3">Option 3</mat-option>
     }
   </mat-select>
 </mat-form-field>

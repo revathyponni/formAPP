@@ -3,6 +3,9 @@ import { FormField } from '../../../models/field';
 import { FormService } from '../../../services/form.service';
 import { AuthService } from '../../../services/auth.service';
 
+/**
+ * This component is used to represent a form field.
+ */
 @Component({
   selector: 'app-form-field',
   standalone: false,
@@ -14,7 +17,7 @@ export class FormFieldComponent {
 
   // Injections
   formService = inject(FormService);
-  authService = inject(AuthService);
+  private authService = inject(AuthService);
 
   // Computed properties
   isSelected = computed(() =>
@@ -22,7 +25,11 @@ export class FormFieldComponent {
   );
   isAdmin = computed(() => this.authService.isAdmin());
 
-  removeField(event: MouseEvent) {
+  /**
+   * This method is called to remove a form field.
+   * @param event The mouse event
+   */
+  removeField(event: MouseEvent): void {
     event.stopPropagation();
     this.formService.deleteField(this.field().id);
   }

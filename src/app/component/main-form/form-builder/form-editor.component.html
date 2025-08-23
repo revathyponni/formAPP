@@ -12,13 +12,13 @@
       <div class="mb-2">Row</div>
       <div>
         @if(isAdmin()) {
-          <button
-            class="btn btn-outline-danger btn-sm"
-            (click)="formService.deleteRow(item.id)"
-            [hidden]="formService.rows().length === 1"
-          >
-            <i class="bi bi-trash"></i>
-          </button>
+        <button
+          class="btn btn-outline-danger btn-sm"
+          (click)="formService.deleteRow(item.id)"
+          [hidden]="formService.rows().length === 1"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
         }
       </div>
     </div>
@@ -37,9 +37,7 @@
         <app-form-field [field]="items"></app-form-field>
       </div>
       }@empty {
-        <div class="col text-center">
-          Drag and drop fields here
-        </div>
+      <div class="col text-center">Drag and drop fields here</div>
       }
     </div>
   </div>

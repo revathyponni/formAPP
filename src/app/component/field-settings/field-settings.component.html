@@ -8,7 +8,9 @@
     <div class="settings-container">
       @for (setting of fieldSettings(); track setting.key) {
       <div class="setting-item mb-4 p-3 border rounded bg-light">
-        @switch (setting.type) { @case ('text') {
+        @switch (setting.type) {
+        <!-- Text Input -->
+        @case ('text') {
         <div class="form-group">
           <label class="form-label fw-bold mb-2">{{ setting.label }}</label>
           <input
@@ -22,7 +24,9 @@
             [disabled]="!isAdmin()"
           />
         </div>
-        } @case ('checkbox') {
+        }
+        <!-- Checkbox -->
+        @case ('checkbox') {
         <div class="form-check">
           <input
             class="form-check-input"
@@ -38,7 +42,9 @@
             {{ setting.label }}
           </label>
         </div>
-        } @case ('dynamic-options') {
+        }
+        <!-- Dynamic Options -->
+        @case ('dynamic-options') {
         <div class="dynamic-options-group">
           <h6 class="fw-bold mb-3">{{ setting.label }}</h6>
           <div class="options-container border rounded p-3 bg-white">
@@ -108,7 +114,9 @@
             }
           </div>
         </div>
-        } @case ('date') {
+        }
+        <!-- Date Picker -->
+        @case ('date') {
         <div class="form-group">
           <label class="form-label fw-bold mb-2">{{ setting.label }}</label>
           <input
@@ -122,7 +130,9 @@
             [disabled]="!isAdmin()"
           />
         </div>
-        } @case ('select') {
+        }
+        <!-- Select Dropdown -->
+        @case ('select') {
         <div class="form-group">
           <label class="form-label fw-bold mb-2">{{ setting.label }}</label>
           <select

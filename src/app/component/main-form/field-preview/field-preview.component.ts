@@ -2,16 +2,20 @@ import { Component, computed, inject, input } from '@angular/core';
 import { FormService } from '../../../services/form.service';
 import { FormField } from '../../../models/field';
 
+/**
+ * This component is used to preview a form field.
+ */
 @Component({
   selector: 'app-field-preview',
   standalone: false,
   templateUrl: './field-preview.component.html',
-  styleUrl: './field-preview.component.scss'
+  styleUrl: './field-preview.component.scss',
 })
 export class FieldPreviewComponent {
   field = input.required<FormField>();
-// Injection
-  formService = inject(FormService);
+
+  // Injections
+  private formService = inject(FormService);
 
   previewComponent = computed(() => {
     const fieldType = this.formService.getFieldType(this.field().type);

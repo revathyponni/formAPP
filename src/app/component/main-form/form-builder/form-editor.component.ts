@@ -4,6 +4,9 @@ import { FormService } from '../../../services/form.service';
 import { FormField } from '../../../models/field';
 import { AuthService } from '../../../services/auth.service';
 
+/**
+ * This component is used to edit a form.
+ */
 @Component({
   selector: 'app-form-editor',
   standalone: false,
@@ -15,9 +18,14 @@ export class FormEditorComponent {
   formService = inject(FormService);
   authService = inject(AuthService);
 
-  // Computed property to check if user is admin
   isAdmin = computed(() => this.authService.isAdmin());
-  onDrop(event: CdkDragDrop<string>, rowId: string) {
+
+  /**
+   * This method is called when a form field is dropped.
+   * @param event The drag drop event
+   * @param rowId The ID of the row where the field is dropped
+   */
+  onDrop(event: CdkDragDrop<string>, rowId: string): void {
     if (event.previousContainer.data === 'field-selector') {
       const fieldType = event.item.data;
       const newField: FormField = {

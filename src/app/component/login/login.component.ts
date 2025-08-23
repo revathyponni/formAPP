@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
+/**
+ * This component is used for user login.
+ */
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  standalone:false,
+  standalone: false,
 })
 export class LoginComponent {
   username = '';
@@ -13,11 +16,13 @@ export class LoginComponent {
   role: 'admin' | 'user' = 'admin';
   errorMessage = '';
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  // Injections
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
+  /**
+   * This method is called when the form is submitted.
+   */
   onSubmit(): void {
     this.errorMessage = '';
 
@@ -26,7 +31,11 @@ export class LoginComponent {
       return;
     }
 
-    const isAuthenticated = this.authService.login(this.username, this.password, this.role);
+    const isAuthenticated = this.authService.login(
+      this.username,
+      this.password,
+      this.role
+    );
 
     if (isAuthenticated) {
       this.router.navigate(['/dashboard']);
@@ -35,6 +44,10 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * This method is called when the user selects a role.
+   * @param selectedRole The role selected by the user.
+   */
   onRoleChange(selectedRole: 'admin' | 'user'): void {
     this.role = selectedRole;
   }

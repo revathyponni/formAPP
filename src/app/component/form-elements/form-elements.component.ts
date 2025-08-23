@@ -14,7 +14,12 @@ export class FormElementsComponent {
 
   fieldTypes = this.formService.getAllFields();
 
-  blockDropOnElement(item: CdkDrag<any>) {
+  /**
+   * This method is used to block dropping on a specific element.
+   * @param item The item being dragged
+   * @returns boolean
+   */
+  blockDropOnElement(item: CdkDrag<any>): boolean {
     return false;
   }
 }

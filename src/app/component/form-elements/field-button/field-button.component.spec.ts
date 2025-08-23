@@ -8,9 +8,8 @@ describe('FieldButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FieldButtonComponent]
-    })
-    .compileComponents();
+      declarations: [FieldButtonComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FieldButtonComponent);
     component = fixture.componentInstance;
