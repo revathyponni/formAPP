@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormElementsComponent } from './form-elements.component';
+import { FieldButtonComponent } from './field-button/field-button.component';
 
 describe('FormElementsComponent', () => {
   let component: FormElementsComponent;
@@ -7,7 +9,8 @@ describe('FormElementsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FormElementsComponent],
+      declarations: [FormElementsComponent, FieldButtonComponent],
+      imports: [DragDropModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(FormElementsComponent);

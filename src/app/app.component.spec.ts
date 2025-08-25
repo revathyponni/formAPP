@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { NavHeaderComponent } from './component/nav-header/nav-header.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -9,7 +10,8 @@ describe('AppComponent', () => {
         RouterModule.forRoot([])
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        NavHeaderComponent
       ],
     }).compileComponents();
   });
@@ -30,6 +32,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, formApp1');
+    expect(compiled.querySelector('app-nav-header')).toBeTruthy();
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 });

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { mainFormComponent } from './main-form.component';
+import { FormPreviewComponent } from './form-preview/form-preview.component';
 
 describe('mainFormComponent', () => {
   let component: mainFormComponent;
@@ -7,7 +8,7 @@ describe('mainFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [mainFormComponent],
+      declarations: [mainFormComponent, FormPreviewComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(mainFormComponent);
